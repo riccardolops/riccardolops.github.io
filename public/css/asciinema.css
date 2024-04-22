@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "My Special Font";
+    src: url("/static/css/fonts/Sauce Code Pro Nerd Font Complete.ttf") format("truetype");
+}
+
+.asciinema-terminal {
+    font-family: 'My Special Font', Consolas, Menlo, 'Bitstream Vera Sans Mono', monospace, 'Powerline Symbols';
+}
+

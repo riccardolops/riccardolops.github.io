@@ -1,0 +1,17 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>All Posts - Riccardo Lops&#39;s personal site</title>
+        <link>https://riccardolops.site/posts/</link>
+        <description>All Posts | Riccardo Lops&#39;s personal site</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>lops.riccardo.99@gmail.com (Riccardo Lops)</managingEditor>
+            <webMaster>lops.riccardo.99@gmail.com (Riccardo Lops)</webMaster><lastBuildDate>Thu, 21 Sep 2023 19:02:26 &#43;0200</lastBuildDate><atom:link href="https://riccardolops.site/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>PWN THE ROVER</title>
+    <link>https://riccardolops.site/posts/pwn-the-rover/</link>
+    <pubDate>Thu, 21 Sep 2023 19:02:26 &#43;0200</pubDate>
+    <author>Riccardo Lops</author>
+    <guid>https://riccardolops.site/posts/pwn-the-rover/</guid>
+    <description><![CDATA[<h1 id="pwn-the-rover-esa-hacking-contest">pwn-the-rover: ESA Hacking Contest</h1>
+<p>Two of the things that fascinate me most are space exploration and cybersecurity. So, when my university secretary forwarded me an email about a hacking contest from ESA this Monday, I decided to give it a shot.</p>]]></description>
+</item>
+</channel>
+</rss>

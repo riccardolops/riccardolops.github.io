@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>PWN THE ROVER - Riccardo Lops&#39;s personal site</title><meta name="Description" content="This article shows the solutions for the PTR qualification contest."><meta property="og:title" content="PWN THE ROVER" />
+<meta property="og:description" content="This article shows the solutions for the PTR qualification contest." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://riccardolops.site/posts/pwn-the-rover/" /><meta property="og:image" content="https://riccardolops.site/posts/pwn-the-rover/featured-image.png" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-21T19:02:26+02:00" />
+<meta property="article:modified_time" content="2023-09-28T15:08:50+02:00" /><meta property="og:site_name" content="Riccardo Lops&#39;s Blog" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://riccardolops.site/posts/pwn-the-rover/featured-image.png" /><meta name="twitter:title" content="PWN THE ROVER"/>
+<meta name="twitter:description" content="This article shows the solutions for the PTR qualification contest."/>
+<meta name="application-name" content="Riccardo Lops">
+<meta name="apple-mobile-web-app-title" content="Riccardo Lops"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://riccardolops.site/posts/pwn-the-rover/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "PWN THE ROVER",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/riccardolops.site\/posts\/pwn-the-rover\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/riccardolops.site\/posts\/pwn-the-rover\/featured-image.png",
+                            "width":  2578 ,
+                            "height":  695 
+                        }],"genre": "posts","keywords": "Space, Cybersecurity","wordcount":  2405 ,
+        "url": "https:\/\/riccardolops.site\/posts\/pwn-the-rover\/","datePublished": "2023-09-21T19:02:26+02:00","dateModified": "2023-09-28T15:08:50+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Riccardo Lops"
+            },"description": "This article shows the solutions for the PTR qualification contest."
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Riccardo Lops&#39;s personal site"><span class="header-title-pre"><i class='far fa-smile fa-fw' aria-hidden='true'></i></span>Riccardo Lops</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Riccardo Lops&#39;s personal site"><span class="header-title-pre"><i class='far fa-smile fa-fw' aria-hidden='true'></i></span>Riccardo Lops</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">PWN THE ROVER</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Riccardo Lops</a>
+</span>&nbsp;<span class="post-category">included in <a href="/categories/blog/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Blog</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-09-21">2023-09-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2405 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;12 minutes&nbsp;</div>
+        </div><div class="featured-image"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/posts/pwn-the-rover/featured-image.png"
+        data-srcset="/posts/pwn-the-rover/featured-image.png, /posts/pwn-the-rover/featured-image.png 1.5x, /posts/pwn-the-rover/featured-image.png 2x"
+        data-sizes="auto"
+        alt="/posts/pwn-the-rover/featured-image.png"
+        title="This article shows the solutions for the PTR qualification contest." /></div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-havealook">1. haveALook</a></li>
+    <li><a href="#2-missingchat">2. missingChat</a>
+      <ul>
+        <li><a href="#update">Update!!!</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-androidtrivial">3. androidTrivial</a></li>
+    <li><a href="#4-androideasy">4. androidEasy</a></li>
+    <li><a href="#5-androidintermediate">5. androidIntermediate</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="pwn-the-rover-esa-hacking-contest">pwn-the-rover: ESA Hacking Contest</h1>
+<p>Two of the things that fascinate me most are space exploration and cybersecurity. So, when my university secretary forwarded me an email about a hacking contest from ESA this Monday, I decided to give it a shot.</p>
+<p>The contest in question is <a href="https://pwn-the-rover.space" target="_blank" rel="noopener noreffer">&ldquo;PWN THE ROVER&rdquo;</a>
+, and to participate in the event, you need to solve a set of capture the flag qualification challenges. Like any respectable CTF, to complete the challenge, you need to find tokens in this format: <code>PTR{challenge-dependent-token}</code>. They can be solved independently from one another. If you want to try to solve them yourself, you can find the archive <a href="/posts/pwn-the-rover/qualification-challenges.zip" rel=""><i class="far fa-file-archive fa-fw" aria-hidden="true"></i>&nbsp;here</a>
+.</p>
+<p>Unfortunately, they are not going to publish the solutions, so I decided to share in this blog post how I solved four of the five challenges (I was not able to finish the second one 😕, but if I crack it, I will update the post).</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">I won&rsquo;t go into details about steganography or reverse engineering but only tell how I arrived at the solutions.</div>
+        </div>
+    </div>
+<h2 id="1-havealook">1. haveALook</h2>
+<p><figure><a class="lightgallery" href="/posts/pwn-the-rover/challenge.jpg" title="challenge.jpg" data-thumbnail="/posts/pwn-the-rover/challenge.jpg" data-sub-html="<h2>challenge.jpg</h2><p>challenge.jpg</p>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/posts/pwn-the-rover/challenge.jpg"
+            data-srcset="/posts/pwn-the-rover/challenge.jpg, /posts/pwn-the-rover/challenge.jpg 1.5x, /posts/pwn-the-rover/challenge.jpg 2x"
+            data-sizes="auto"
+            alt="/posts/pwn-the-rover/challenge.jpg" width="123" height="123" />
+    </a><figcaption class="image-caption">challenge.jpg</figcaption>
+    </figure></p>
+<p>The first challenge starts with&hellip; a rick-roll 🤣. A single JPEG file with a QR code is given, but upon scanning it, you can see that the URL presents a fragment identifier:</p>
+<p><code>https://www.youtube.com/watch?v=dQw4w9WgXcQ#PrinceProcessorCanHelpWithTheTitle</code></p>
+<p>The only hint here is about <a href="https://github.com/hashcat/princeprocessor" target="_blank" rel="noopener noreffer">princeprocessor</a>
+, a clever tool that helps you generate password dictionaries.
+First I created a file with the title:</p>
+
+
+
+
+
+
+
+
+<script async id="asciicast-RrVmlkIWoUoMfHenyzrnVnBAy" src="https://asciinema.org/a/RrVmlkIWoUoMfHenyzrnVnBAy.js"></script>
+
+<p>Then I used princeprocessor to generate a dictionary:</p>
+
+
+
+
+
+
+
+
+<script async id="asciicast-emQerMk55ybqAfKBgThdwLMTK" src="https://asciinema.org/a/emQerMk55ybqAfKBgThdwLMTK.js"></script>
+
+<p>At this point, I was not sure on what to do, so I thought maybe there was something else hidden in the image, perhaps through <a href="https://steghide.sourceforge.net/" target="_blank" rel="noopener noreffer">steghide</a>
+.</p>
+<p>To brute force the possible solutions, I used a simple Python <a href="https://github.com/Paradoxis/StegCracker" target="_blank" rel="noopener noreffer">script</a>
+ but later discovered a faster alternative called <a href="https://github.com/RickdeJager/stegseek" target="_blank" rel="noopener noreffer">stegseek</a>
+ that basically does the same thing:</p>
+
+
+
+
+
+
+
+
+<script async id="asciicast-pJmpYxKKnuad9PRvQY8MQjwLF" src="https://asciinema.org/a/pJmpYxKKnuad9PRvQY8MQjwLF.js"></script>
+
+<p>BINGO!!! The first flag is done! <code>PTR{R1ckR0ll&amp;St3ganogr4phyComb0}</code></p>
+<h2 id="2-missingchat">2. missingChat</h2>
+<p><figure><a class="lightgallery" href="/posts/pwn-the-rover/Screenshot_20230808-pixel6pro.png" title="Screenshot_20230808-pixel6pro.png" data-thumbnail="/posts/pwn-the-rover/Screenshot_20230808-pixel6pro.png" data-sub-html="<h2>Screenshot_20230808-pixel6pro.png</h2><p>Screenshot_20230808-pixel6pro.png</p>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/posts/pwn-the-rover/Screenshot_20230808-pixel6pro.png"
+            data-srcset="/posts/pwn-the-rover/Screenshot_20230808-pixel6pro.png, /posts/pwn-the-rover/Screenshot_20230808-pixel6pro.png 1.5x, /posts/pwn-the-rover/Screenshot_20230808-pixel6pro.png 2x"
+            data-sizes="auto"
+            alt="/posts/pwn-the-rover/Screenshot_20230808-pixel6pro.png" width="1440" height="393" />
+    </a><figcaption class="image-caption">Screenshot_20230808-pixel6pro.png</figcaption>
+    </figure></p>
+<p>For this one, I don&rsquo;t have the solution, but I noticed that the PNG has some extra data after the IEND chunk, with as far as I understand, some other IDAT chunks.</p>
+
+
+
+
+
+
+
+
+<script async id="asciicast-EngGkESslXOcZPGttmX08rJ9v" src="https://asciinema.org/a/EngGkESslXOcZPGttmX08rJ9v.js"></script>
+
+<p>This has led me to believe that most likely they hid the rest of the &ldquo;missing chat&rdquo; image with the token at the end of the file.</p>
+<p>Nothing much to say here, unfortunately 😕.</p>
+<h3 id="update">Update!!!</h3>
+<p>After some googling I found a vulnerability that affected a screenshot editing tool in Google Pixel phones: <a href="https://en.wikipedia.org/wiki/ACropalypse" target="_blank" rel="noopener noreffer">aCropalypse (CVE 2023-21036)</a>
+.</p>
+<p>Online you can find <a href="https://acropalypse.app" target="_blank" rel="noopener noreffer">tools</a>
+ that will restore the screenshot and from that I was able to get <code>PTR{Rolling-Stones4}</code>
+<figure><a class="lightgallery" href="/posts/pwn-the-rover/acropalypse.png" title="acropalypse.png" data-thumbnail="/posts/pwn-the-rover/acropalypse.png" data-sub-html="<h2>acropalypse.png</h2><p>acropalypse.png</p>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/posts/pwn-the-rover/acropalypse.png"
+            data-srcset="/posts/pwn-the-rover/acropalypse.png, /posts/pwn-the-rover/acropalypse.png 1.5x, /posts/pwn-the-rover/acropalypse.png 2x"
+            data-sizes="auto"
+            alt="/posts/pwn-the-rover/acropalypse.png" width="1440" height="3120" />
+    </a><figcaption class="image-caption">acropalypse.png</figcaption>
+    </figure></p>
+<h2 id="3-androidtrivial">3. androidTrivial</h2>
+<p>The next three challenges are more or less the same, only with increasing difficulty 😄.</p>
+<p>There is a lot of info on the internet on reverse engineering on Android, but I found <a href="https://github.com/OWASP/owasp-mastg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md" target="_blank" rel="noopener noreffer">this guide</a>
+ very useful.</p>
+<p>For the first Android app, it was pretty straightforward to discover the password since it was not obfuscated at all in the source code obtained after decompilation with an online <a href="http://www.javadecompilers.com/apk/" target="_blank" rel="noopener noreffer">decompiler</a>
+.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.esa.ptr23.qualification</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">android.content.Context</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.esa.ptr23.qualification.trivial.R</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Verifier</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="nf">Verifier</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">verifyPassword</span><span class="p">(</span><span class="n">Context</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">something_hidden</span><span class="p">).</span><span class="na">equals</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="na">trim</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>This is the Verifier class with a simple function that checks if the input string <code>str.trim()</code> is equal to <code>something_hidden</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl">    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&#34;something_hidden&#34;</span><span class="nt">&gt;</span>PTR{SpaceMayBeTheFinalFrontier}<span class="nt">&lt;/string&gt;</span>
+</span></span></code></pre></div><h2 id="4-androideasy">4. androidEasy</h2>
+<p>Here, the same class has a hashmap that associates each alphabet letter with an emoji.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.esa.ptr23.qualification</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">android.content.Context</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.HashMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Map</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Verifier</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">Character</span><span class="p">,</span><span class="w"> </span><span class="n">changeChar</span><span class="o">&gt;</span><span class="w"> </span><span class="n">translate</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$a */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0464a</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;😸&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0464a</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$c */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0466c</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;😹&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0466c</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$b */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0465b</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🐱&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0465b</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$e */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0468e</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;😻&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0468e</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$d */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0467d</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;😺&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0467d</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$g */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0470g</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;😽&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0470g</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$f */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0469f</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;😼&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0469f</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$i */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0472i</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;😿&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0472i</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$h */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0471h</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;😾&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0471h</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$k */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0474k</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🐆&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0474k</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$j */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0473j</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🙀&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0473j</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$m */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0476m</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🦍&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0476m</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$l */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0475l</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🐅&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0475l</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$o */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0478o</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🦑&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0478o</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$n */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0477n</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🐍&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0477n</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$q */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0480q</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🐊&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0480q</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$p */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0479p</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🐌&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0479p</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$s */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0482s</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🙈&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0482s</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$r */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0481r</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🦎&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0481r</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$u */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0484u</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🎮&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0484u</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$t */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0483t</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🦗&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0483t</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$w */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0486w</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;℡&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0486w</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$v */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0485v</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🎛&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0485v</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$y */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0488y</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🖪&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0488y</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$x */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0487x</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;💿&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0487x</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/* renamed from: org.esa.ptr23.qualification.Verifier$z */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">C0489z</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🎥&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">C0489z</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">curlybracketopen</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🦈&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">curlybracketopen</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">curlybracketclose</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;🧸&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">curlybracketclose</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">class</span> <span class="nc">unchanged</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">changeChar</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">change</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">str</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="nf">unchanged</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="nf">Verifier</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HashMap</span><span class="w"> </span><span class="n">hashMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hashMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">hashMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0464a</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0465b</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;c&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0466c</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;d&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0467d</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;e&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0468e</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;f&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0469f</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;g&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0470g</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;h&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0471h</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;i&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0472i</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;j&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0473j</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;k&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0474k</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;l&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0475l</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;m&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0476m</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;n&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0477n</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;o&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0478o</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;p&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0479p</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;q&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0480q</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;r&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0481r</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;s&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0482s</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;t&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0483t</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;u&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0484u</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;v&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0485v</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;w&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0486w</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;x&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0487x</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;y&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0488y</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;z&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">C0489z</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;{&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">curlybracketopen</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="sc">&#39;}&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">curlybracketclose</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">doit</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">sb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">char</span><span class="o">[]</span><span class="w"> </span><span class="n">charArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">str</span><span class="p">.</span><span class="na">toCharArray</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">charArray</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">0</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">charArray</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">sb</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">translate</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">c</span><span class="p">)).</span><span class="na">change</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">c</span><span class="p">)));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">i</span><span class="o">++</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">NullPointerException</span><span class="w"> </span><span class="n">unused</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">sb</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">trim</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">verifyPassword</span><span class="p">(</span><span class="n">Context</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Verifier</span><span class="p">().</span><span class="na">doit</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="na">toLowerCase</span><span class="p">()).</span><span class="na">equals</span><span class="p">(</span><span class="s">&#34;🐌🦗🦎🦈😿🦍😸😽😿🐍😻🦗😾😻🦎😻🙈🐍🦑😾😻😸🎛😻🐍🧸&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>So in the end <code>🐌🦗🦎🦈😿🦍😸😽😿🐍😻🦗😾😻🦎😻🙈🐍🦑😾😻😸🎛😻🐍🧸</code> becomes <code>PTR{ImagineTheresNoHeaven}</code></p>
+<h2 id="5-androidintermediate">5. androidIntermediate</h2>
+<p>The last one has a class that uses a Java Native Interface (JNI) method called <code>checkPasswordByJNI07</code> loaded by the library <code>native-lib</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.esa.ptr23.qualification</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">android.content.Context</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Verifier</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">TAG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;Verifier&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">native</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">checkPasswordByJNI07</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">loadLibrary</span><span class="p">(</span><span class="s">&#34;native-lib&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="nf">Verifier</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">verifyPassword</span><span class="p">(</span><span class="n">Context</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;TRUE&#34;</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">checkPasswordByJNI07</span><span class="p">(</span><span class="n">str</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>The logical next step was to reverse-engineer the pre-built native library using <a href="https://ghidra-sre.org/" target="_blank" rel="noopener noreffer">Ghidra</a>
+</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">jstring</span> <span class="nf">Java_org_esa_ptr23_qualification_Verifier_checkPasswordByJNI07</span>
+</span></span><span class="line"><span class="cl">                  <span class="p">(</span><span class="n">JNIEnv</span> <span class="o">*</span><span class="n">param_1</span><span class="p">,</span><span class="n">undefined8</span> <span class="n">param_2</span><span class="p">,</span><span class="n">jstring</span> <span class="n">param_3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">cVar1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">iVar2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">uVar3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">*</span><span class="n">chars</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">*</span><span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="o">*</span><span class="n">__ptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jstring</span> <span class="n">p_Var6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">*</span><span class="n">pcVar7</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="o">*</span><span class="n">psVar8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">**</span><span class="n">ppcVar9</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="n">__n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">long</span> <span class="n">in_FS_OFFSET</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">undefined8</span> <span class="n">local_50</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="n">local_48</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">*</span><span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">long</span> <span class="n">local_38</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jsize</span> <span class="n">jVar4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">local_38</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="kt">long</span> <span class="o">*</span><span class="p">)(</span><span class="n">in_FS_OFFSET</span> <span class="o">+</span> <span class="mh">0x28</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jVar4</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">param_1</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetStringUTFLength</span><span class="p">)(</span><span class="n">param_1</span><span class="p">,</span><span class="n">param_3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uVar3</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span><span class="p">)</span><span class="n">jVar4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">chars</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">param_1</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetStringUTFChars</span><span class="p">)(</span><span class="n">param_1</span><span class="p">,</span><span class="n">param_3</span><span class="p">,(</span><span class="n">jboolean</span> <span class="o">*</span><span class="p">)</span><span class="mh">0x0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="mh">0xffffffef</span> <span class="o">&lt;</span> <span class="n">uVar3</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">__ndk1</span><span class="o">::</span><span class="n">__basic_string_common</span><span class="o">&lt;</span><span class="nb">true</span><span class="o">&gt;::</span><span class="n">__throw_length_error</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">goto</span> <span class="n">LAB_00123d03</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__n</span> <span class="o">=</span> <span class="p">(</span><span class="n">size_t</span><span class="p">)(</span><span class="kt">int</span><span class="p">)</span><span class="n">uVar3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">uVar3</span> <span class="o">&lt;</span> <span class="mh">0x17</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">local_50</span> <span class="o">=</span> <span class="n">CONCAT71</span><span class="p">(</span><span class="n">local_50</span><span class="p">.</span><span class="n">_1_7_</span><span class="p">,(</span><span class="kt">char</span><span class="p">)</span><span class="n">jVar4</span> <span class="o">*</span> <span class="sc">&#39;\x02&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pcVar5</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)((</span><span class="kt">long</span><span class="p">)</span><span class="o">&amp;</span><span class="n">local_50</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">uVar3</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">goto</span> <span class="n">LAB_00123976</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">local_50</span> <span class="o">=</span> <span class="n">__n</span> <span class="o">+</span> <span class="mh">0x10</span> <span class="o">&amp;</span> <span class="mh">0xfffffffffffffff0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pcVar5</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="k">operator</span><span class="p">.</span><span class="k">new</span><span class="p">(</span><span class="n">local_50</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">local_50</span> <span class="o">=</span> <span class="n">local_50</span> <span class="o">|</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">local_48</span> <span class="o">=</span> <span class="n">__n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">local_40</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nl">LAB_00123976</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">memcpy</span><span class="p">(</span><span class="n">pcVar5</span><span class="p">,</span><span class="n">chars</span><span class="p">,</span><span class="n">__n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">pcVar5</span><span class="p">[</span><span class="n">__n</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="mh">0x4c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">*</span><span class="n">__ptr</span> <span class="o">=</span> <span class="mh">0x50</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x55</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x54</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x7e</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x4a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x71</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x7f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x54</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x6d</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x5d</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x79</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mh">0xb</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x5f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mh">0xc</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x74</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mh">0xd</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x72</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mh">0xe</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x5b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mh">0xf</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x7e</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">*</span><span class="p">(</span><span class="n">undefined8</span> <span class="o">*</span><span class="p">)(</span><span class="n">__ptr</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">)</span> <span class="o">=</span> <span class="mh">0x7f0000007f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__ptr</span><span class="p">[</span><span class="mh">0x12</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x8f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="cm">/* try { // try from 001239dd to 001239ec has its CatchHandler @ 00123d0a */</span>
+</span></span><span class="line"><span class="cl">  <span class="n">p_Var6</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">param_1</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">NewStringUTF</span><span class="p">)(</span><span class="n">param_1</span><span class="p">,</span><span class="s">&#34;FALSE&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">uVar3</span> <span class="o">==</span> <span class="mh">0x13</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pcVar5</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)((</span><span class="kt">long</span><span class="p">)</span><span class="o">&amp;</span><span class="n">local_50</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">__ptr</span> <span class="o">==</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">*</span><span class="n">pcVar7</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">              <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">              <span class="p">}</span>
+</span></span><span class="line"><span class="cl">              <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                  <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+</span> <span class="mi">6</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                  <span class="n">psVar8</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">local_48</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                  <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">psVar8</span> <span class="o">=</span> <span class="p">(</span><span class="n">size_t</span> <span class="o">*</span><span class="p">)(</span><span class="n">local_40</span> <span class="o">+</span> <span class="mi">7</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                  <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="o">*</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">psVar8</span> <span class="o">+</span> <span class="mi">7</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                      <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                      <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                      <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                      <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">+</span> <span class="mi">9</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                          <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                          <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                          <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                          <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mh">0xb</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mh">0xb</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0xb</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                            <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                              <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                            <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mh">0xc</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mh">0xc</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0xc</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                              <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                              <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                              <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                              <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mh">0xd</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mh">0xd</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0xd</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                                <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                  <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mh">0xe</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mh">0xe</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0xe</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                  <span class="n">ppcVar9</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="p">)(</span><span class="n">local_40</span> <span class="o">+</span> <span class="mh">0xf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                                  <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                    <span class="n">ppcVar9</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                                  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                  <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mh">0xf</span><span class="p">]</span> <span class="o">==</span> <span class="o">*</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">ppcVar9</span> <span class="o">+</span> <span class="mh">0xf</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                    <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                                    <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                      <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                    <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mh">0x10</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mh">0x10</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x10</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                      <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                                      <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                        <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                                      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                      <span class="k">if</span> <span class="p">(</span><span class="n">__ptr</span><span class="p">[</span><span class="mh">0x11</span><span class="p">]</span> <span class="o">==</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mh">0x11</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x11</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                        <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">local_40</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                                        <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                          <span class="n">pcVar7</span> <span class="o">=</span> <span class="n">pcVar5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                        <span class="n">cVar1</span> <span class="o">=</span> <span class="n">pcVar7</span><span class="p">[</span><span class="mh">0x12</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                                        <span class="n">iVar2</span> <span class="o">=</span> <span class="n">__ptr</span><span class="p">[</span><span class="mh">0x12</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                                        <span class="n">free</span><span class="p">(</span><span class="n">__ptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                                        <span class="k">if</span> <span class="p">(</span><span class="n">iVar2</span> <span class="o">==</span> <span class="n">cVar1</span> <span class="o">+</span> <span class="mh">0x12</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="cm">/* try { // try from 00123c94 to 00123cb8 has its CatchHandler @ 00123d08 */</span>
+</span></span><span class="line"><span class="cl">                                          <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">param_1</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">ReleaseStringUTFChars</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                                                    <span class="p">(</span><span class="n">param_1</span><span class="p">,</span><span class="n">param_3</span><span class="p">,</span><span class="n">chars</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                                          <span class="n">p_Var6</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">param_1</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">NewStringUTF</span><span class="p">)(</span><span class="n">param_1</span><span class="p">,</span><span class="s">&#34;TRUE&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                        <span class="k">goto</span> <span class="n">LAB_00123cc6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                                      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                              <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">              <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">free</span><span class="p">(</span><span class="n">__ptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nl">LAB_00123cc6</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">((</span><span class="n">local_50</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">operator</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="n">local_40</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">long</span> <span class="o">*</span><span class="p">)(</span><span class="n">in_FS_OFFSET</span> <span class="o">+</span> <span class="mh">0x28</span><span class="p">)</span> <span class="o">==</span> <span class="n">local_38</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">p_Var6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nl">LAB_00123d03</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="cm">/* WARNING: Subroutine does not return */</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__stack_chk_fail</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>This is the function that verifies the password; we know for sure that:</p>
+<ul>
+<li><code>p_Var6</code> returns either <code>TRUE</code> or <code>FALSE</code> after all the checks done by the if statements.</li>
+<li><code>uVar3</code> is the length of the input string, and we also know that the password will be of length <code>19</code>.</li>
+<li>The values in the memory address pointed to by <code>__ptr</code> are somehow related to the characters in the password.</li>
+<li>If we try to understand the logic of the checks performed, the hexadecimal values representing the ASCII characters of the input string are summed by a progressively increasing value depending on the position.</li>
+</ul>
+<p>So, to find the password, we just need to convert the hexadecimal values declared in <code>__ptr</code> minus the position of the character:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">__ptr</th>
+<th style="text-align:center">-</th>
+<th style="text-align:center">=</th>
+<th style="text-align:center">ASCII</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0x50</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0x50</td>
+<td style="text-align:center">P</td>
+</tr>
+<tr>
+<td style="text-align:center">0x55</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0x54</td>
+<td style="text-align:center">T</td>
+</tr>
+<tr>
+<td style="text-align:center">0x54</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">0x52</td>
+<td style="text-align:center">R</td>
+</tr>
+<tr>
+<td style="text-align:center">0x7e</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">0x7b</td>
+<td style="text-align:center">{</td>
+</tr>
+<tr>
+<td style="text-align:center">0x4a</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">0x46</td>
+<td style="text-align:center">F</td>
+</tr>
+<tr>
+<td style="text-align:center">0x71</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">0x6c</td>
+<td style="text-align:center">l</td>
+</tr>
+<tr>
+<td style="text-align:center">0x7f</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">0x79</td>
+<td style="text-align:center">y</td>
+</tr>
+<tr>
+<td style="text-align:center">0x54</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">0x4d</td>
+<td style="text-align:center">M</td>
+</tr>
+<tr>
+<td style="text-align:center">0x6d</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">0x65</td>
+<td style="text-align:center">e</td>
+</tr>
+<tr>
+<td style="text-align:center">0x5d</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">0x54</td>
+<td style="text-align:center">T</td>
+</tr>
+<tr>
+<td style="text-align:center">0x79</td>
+<td style="text-align:center">a</td>
+<td style="text-align:center">0x6f</td>
+<td style="text-align:center">o</td>
+</tr>
+<tr>
+<td style="text-align:center">0x5f</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">0x54</td>
+<td style="text-align:center">T</td>
+</tr>
+<tr>
+<td style="text-align:center">0x74</td>
+<td style="text-align:center">c</td>
+<td style="text-align:center">0x68</td>
+<td style="text-align:center">h</td>
+</tr>
+<tr>
+<td style="text-align:center">0x72</td>
+<td style="text-align:center">d</td>
+<td style="text-align:center">0x65</td>
+<td style="text-align:center">e</td>
+</tr>
+<tr>
+<td style="text-align:center">0x5b</td>
+<td style="text-align:center">e</td>
+<td style="text-align:center">0x4d</td>
+<td style="text-align:center">M</td>
+</tr>
+<tr>
+<td style="text-align:center">0x7e</td>
+<td style="text-align:center">f</td>
+<td style="text-align:center">0x6f</td>
+<td style="text-align:center">o</td>
+</tr>
+<tr>
+<td style="text-align:center">0x7f</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">0x6F</td>
+<td style="text-align:center">o</td>
+</tr>
+<tr>
+<td style="text-align:center">0x7f</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">0x6e</td>
+<td style="text-align:center">n</td>
+</tr>
+<tr>
+<td style="text-align:center">0x8f</td>
+<td style="text-align:center">12</td>
+<td style="text-align:center">0x7d</td>
+<td style="text-align:center">}</td>
+</tr>
+</tbody>
+</table>
+<p>So in the end we have:
+<code>PTR{FlyMeToTheMoon}</code></p>
+<meting-js url="/posts/pwn-the-rover/20%20-%20FLY%20ME%20TO%20THE%20MOON%20[TV.%20Size%20Version].flac" name="FLY ME TO THE MOON" artist="Bart Howard, Toshiyuki Ohmori &amp; CLAIRE" cover="/posts/pwn-the-rover/nge.jpg" theme="#448aff"></meting-js></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-09-28</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://riccardolops.site/posts/pwn-the-rover/" data-title="PWN THE ROVER" data-hashtags="Space,Cybersecurity"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://riccardolops.site/posts/pwn-the-rover/" data-hashtag="Space"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://riccardolops.site/posts/pwn-the-rover/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://riccardolops.site/posts/pwn-the-rover/" data-title="PWN THE ROVER" data-web><i class="fab fa-whatsapp fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://riccardolops.site/posts/pwn-the-rover/" data-title="PWN THE ROVER"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/space/">Space</a>,&nbsp;<a href="/tags/cybersecurity/">Cybersecurity</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.121.2">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2023 - 2024</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Riccardo Lops</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
